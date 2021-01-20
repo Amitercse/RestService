@@ -1,4 +1,4 @@
-create database message_db;
+create database test_db;
 
 ================================ Message table =================================
 create table message(id integer, message varchar(50), author_name varchar(20), posted_date timestamp, primary key(id));

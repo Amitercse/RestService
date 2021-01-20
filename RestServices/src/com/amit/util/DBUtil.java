@@ -38,7 +38,7 @@ public class DBUtil {
 		if (connection == null) {
 			try {
 				Class.forName("com.mysql.cj.jdbc.Driver");
-				connection= DriverManager.getConnection("jdbc:mysql://localhost:3306/message_db", "root", "amit");
+				connection= DriverManager.getConnection("jdbc:mysql://localhost:3306/test_db", "root", "root");
 			} catch (ClassNotFoundException e) {
 				logger.error("Error while loading driver class");
 			} catch (SQLException e) {
