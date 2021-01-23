@@ -34,7 +34,7 @@ public class MessageDaoImpl implements MessageDao {
 		Connection connection = DBUtil.getConnection();
 		Statement statement = connection.createStatement();
 		ResultSet resultSet = statement.executeQuery("select * from message");
-		List<MessageResource> messageList = new ArrayList<MessageResource>();
+		List<MessageResource> messageList = new ArrayList<>();
 		while (resultSet.next()) {
 			MessageResource messageResource = new MessageResource();
 			messageResource.setId(resultSet.getInt(1));
@@ -144,7 +144,7 @@ public class MessageDaoImpl implements MessageDao {
 	public List<MessageResource> getMessages(String author, String url) throws SQLException {
 		Connection connection = DBUtil.getConnection();
 		String query = "select * from message where author_name=?";
-		List<MessageResource> messageList = new ArrayList<MessageResource>();
+		List<MessageResource> messageList = new ArrayList<>();
 		PreparedStatement psmt = connection.prepareStatement(query);
 		psmt.setString(1, author);
 		ResultSet resultSet = psmt.executeQuery();

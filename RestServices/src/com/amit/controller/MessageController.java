@@ -37,6 +37,8 @@ public class MessageController {
 	
 	private static Log logger = LogFactory.getLog(MessageController.class);
 	
+	private static final String SYSTEM_ERROR_OCCURRED="System error occurred";
+	
 	/**
 	 * Invoke get request to retrieve all messages and based on author name.
 	 * This method also accepts query param also. Because we can't keep two
@@ -49,7 +51,7 @@ public class MessageController {
 	@GET
 	@Produces(value= {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public List<MessageResource> getMessages(@QueryParam("author") String authorName, @Context UriInfo uriInfo) {
-		List<MessageResource> messagesList = new ArrayList<MessageResource>();
+		List<MessageResource> messagesList = new ArrayList<>();
 		String urlPath = uriInfo.getAbsolutePath().toString();
 		try {
 			MessageService messageService = new MessageServiceImpl();
@@ -58,12 +60,12 @@ public class MessageController {
 			} else {
 				messagesList = messageService.getMessages(urlPath);
 			}
-			if (messagesList.size() == 0) {
+			if (messagesList.isEmpty()) {
 				throw new DataNotFoundException("No message found");
 			}
 		} catch (SQLException e) {
 			logger.error("error occurred while trying to access message list: " + e.getMessage());
-			throw new SystemError("System error occurred");
+			throw new SystemError(SYSTEM_ERROR_OCCURRED);
 		}
 		logger.debug("Returning message list from controller");
 		return messagesList;
@@ -92,7 +94,7 @@ public class MessageController {
 			messageResource.addLink(url, "self");
 		} catch (SQLException e) {
 			logger.info("Error while retrieved message based on message id: " + e.getMessage());
-			throw new SystemError("System error occurred");
+			throw new SystemError(SYSTEM_ERROR_OCCURRED);
 		}
 		return Response.status(Status.OK).entity(messageResource).build();
 	}
@@ -110,7 +112,7 @@ public class MessageController {
 			messageService.addMessage(messageResource);
 		} catch (SQLException e) {
 			logger.error("error occurred while creating a new message: " + e.getMessage());
-			throw new SystemError("System error occurred");
+			throw new SystemError(SYSTEM_ERROR_OCCURRED);
 		}
 		return Response.status(Status.CREATED).build();
 	}
@@ -129,7 +131,7 @@ public class MessageController {
 			messageService.addMessage(messageResource);
 		} catch (SQLException e) {
 			logger.error("error occurred while creating a new message: " + e.getMessage());
-			throw new SystemError("System error occurred");
+			throw new SystemError(SYSTEM_ERROR_OCCURRED);
 		}
 		return Response.status(Status.CREATED).build();
 	}
@@ -163,7 +165,7 @@ public class MessageController {
 			updatedMessageResource.addLink(url, "self");
 		} catch (SQLException e) {
 			logger.error("error occurred while updating message in DB: " + e.getMessage());
-			throw new SystemError("System error occurred");
+			throw new SystemError(SYSTEM_ERROR_OCCURRED);
 		}
 		return Response.status(Status.OK).entity(updatedMessageResource).build();
 	}
@@ -182,7 +184,7 @@ public class MessageController {
 			messageService.deleteMessage(messageId);
 		} catch (SQLException e) {
 			logger.error("error occurred while deleting record: " + e.getMessage());
-			throw new SystemError("System error occurred");
+			throw new SystemError(SYSTEM_ERROR_OCCURRED);
 		}
 		return Response.status(Status.OK).build();
 	}
@@ -196,7 +198,6 @@ public class MessageController {
 	@Path("/context")
 	public String getParamUsingContext(@Context UriInfo uriInfo)
 	{
-		String path= uriInfo.getAbsolutePath().toString();
-		return path;
+		return uriInfo.getAbsolutePath().toString();
 	}
 }

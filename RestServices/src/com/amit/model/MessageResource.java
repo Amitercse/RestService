@@ -21,7 +21,7 @@ public class MessageResource {
 	private String message;
 	private String author;
 	private Date postedDate;
-	List<Link> links= new ArrayList<Link>();
+	List<Link> links= new ArrayList<>();
 	List<CommentResource> commentsList;
 	/**
 	 * Default constructor

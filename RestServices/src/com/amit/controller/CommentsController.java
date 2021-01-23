@@ -32,6 +32,8 @@ public class CommentsController {
 	
 	private static Log logger = LogFactory.getLog(CommentsController.class);
 
+	private static final String SYSTEM_ERROR_OCCURRED= "System error occurred";
+	
 	/**
 	 * Rest end point to get list of comments for a message
 	 * @author amit
@@ -42,7 +44,7 @@ public class CommentsController {
 	@GET
 	@Produces(value= {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public List<CommentResource> getComments(@PathParam("messageId") int messageId, @BeanParam CommentParams params) {
-		List<CommentResource> commentsList = new ArrayList<CommentResource>();
+		List<CommentResource> commentsList = new ArrayList<>();
 		try {
 			CommentsService commentsService = new CommentsServiceImpl();
 			// By default bean param will have default values of parameters.
@@ -52,12 +54,12 @@ public class CommentsController {
 			} else {
 				commentsList = commentsService.getComments(messageId);
 			}
-			if (commentsList.size() == 0) {
+			if (commentsList.isEmpty()) {
 				throw new DataNotFoundException("Comment list not found");
 			}
 		} catch (SQLException e) {
 			logger.error("Error occurred while retrieving comments");
-			throw new SystemError("System error occurred");
+			throw new SystemError(SYSTEM_ERROR_OCCURRED);
 		}
 		return commentsList;
 	}
@@ -82,7 +84,7 @@ public class CommentsController {
 			}
 		} catch (SQLException e) {
 			logger.error("Error occurred while retrieving comments");
-			throw new SystemError("System error occurred");
+			throw new SystemError(SYSTEM_ERROR_OCCURRED);
 		}
 		return Response.status(Status.OK).entity(commentResource).build();
 	}
@@ -102,7 +104,7 @@ public class CommentsController {
 			commentService.addComment(commentResource);
 		} catch (SQLException e) {
 			logger.error("error occurred while adding new comment");
-			throw new SystemError("System error occurred");
+			throw new SystemError(SYSTEM_ERROR_OCCURRED);
 		}
 		return Response.status(Status.CREATED).build();
 	}
@@ -130,7 +132,7 @@ public class CommentsController {
 			}
 		} catch (SQLException e) {
 			logger.error("error occurred while updating the comment");
-			throw new SystemError("System error occurred");
+			throw new SystemError(SYSTEM_ERROR_OCCURRED);
 		}
 		return Response.status(Status.OK).entity(updatedcommentResource).build();
 	}
@@ -150,7 +152,7 @@ public class CommentsController {
 			commentService.deleteComment(messageId, commentId);
 		} catch (SQLException e) {
 			logger.error("error occurred while deleting record");
-			throw new SystemError("System error occurred");
+			throw new SystemError(SYSTEM_ERROR_OCCURRED);
 		}
 		return Response.status(Status.OK).build();
 	}

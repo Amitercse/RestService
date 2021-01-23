@@ -15,7 +15,7 @@ import com.amit.model.MessageResource;
  */
 public class MessageServiceImpl implements MessageService {
 	
-	private static Log logger = LogFactory.getLog(MessageService.class);
+	private static Log logger = LogFactory.getLog(MessageServiceImpl.class);
 
 	/**
 	 * Interact with DB and retrieve all messages.
@@ -42,8 +42,7 @@ public class MessageServiceImpl implements MessageService {
 	@Override
 	public MessageResource getMessage(int id) throws SQLException {
 		MessageDao messageDao = new MessageDaoImpl();
-		MessageResource messageResource = messageDao.getMessage(id);
-		return messageResource;
+		return messageDao.getMessage(id);
 	}
 
 	/**

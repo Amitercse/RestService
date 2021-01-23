@@ -28,7 +28,7 @@ public class CommentsDaoImpl implements CommentsDao {
 	@Override
 	public List<CommentResource> getComments(int messageId) throws SQLException {
 		Connection connection = DBUtil.getConnection();
-		List<CommentResource> commentsList = new ArrayList<CommentResource>();
+		List<CommentResource> commentsList = new ArrayList<>();
 		String query = "select * from comment where message_id=?";
 		PreparedStatement psmt = connection.prepareStatement(query);
 		psmt.setInt(1, messageId);
